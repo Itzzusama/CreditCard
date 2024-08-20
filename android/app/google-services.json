@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "303507975050",
+    "project_id": "admin-31e8b",
+    "storage_bucket": "admin-31e8b.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:303507975050:android:b7c9c29e9ac387fabaf673",
+        "android_client_info": {
+          "package_name": "com.credit.app"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBBBIoiR_RGocIYb_Iyc5CPCL0wOzjL6aY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

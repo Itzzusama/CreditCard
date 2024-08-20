@@ -1,0 +1,8 @@
+<resources>
+    <string name="app_name">CreditCard</string>
+    <string name="rntp_temporary_channel_id">CreditCard</string>
+    <string name="rntp_temporary_channel_name">CreditCard</string>
+    <string name="playback_channel_name">Music Player</string>
+</resources>
+
+
