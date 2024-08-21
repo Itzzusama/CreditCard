@@ -18,15 +18,11 @@ const PageThree = ({ route, navigation }) => {
 
   const init = {
     addressDetails: "",
-    netIncome: "",
-    holderName: "",
     cardNumber: "",
     expiryDate: "",
     CVV: "",
   };
   const inits = {
-    netIncomeError: "",
-    holderNameError: "",
     cardNumberError: "",
     expiryDateError: "",
     CVVError: "",
@@ -36,23 +32,6 @@ const PageThree = ({ route, navigation }) => {
   const [loading, setLoading] = useState(false);
 
   const array = [
-    {
-      id: 1,
-      placeholder: "Enter Net Annual Income(₹)",
-      value: state.netIncome,
-      label: "Net Annual Income(₹)",
-      onChange: (text) => setState({ ...state, netIncome: text }),
-      error: errors.netIncomeError,
-    },
-    { id: 1.1 },
-    {
-      id: 2,
-      placeholder: "Enter Card Holder Name",
-      value: state.holderName,
-      label: "Card Holder Name",
-      onChange: (text) => setState({ ...state, holderName: text }),
-      error: errors.holderNameError,
-    },
     {
       id: 3,
       placeholder: "Enter Card Number",
@@ -81,11 +60,7 @@ const PageThree = ({ route, navigation }) => {
   const errorCheck = useMemo(() => {
     return () => {
       let newErrors = {};
-      if (!state.netIncome)
-        newErrors.netIncomeError = "Please enter Net Annual Income.";
-      else if (!state.holderName)
-        newErrors.holderNameError = "Please enter Card Holder Name.";
-      else if (!state.cardNumber)
+      if (!state.cardNumber)
         newErrors.cardNumberError = "Please enter Card Number.";
       else if (!state.expiryDate)
         newErrors.expiryDateError = "Please enter Expiry Date.";
@@ -163,26 +138,16 @@ const PageThree = ({ route, navigation }) => {
       />
       <View style={{ marginVertical: 12 }} />
 
-      {array.map((item) =>
-        item?.id == 1.1 ? (
-          <CustomText
-            key={item.id}
-            label="Credit Card Details"
-            fontFamily={Fonts.semiBold}
-            color={COLORS.red}
-            fontSize={22}
-          />
-        ) : (
-          <CustomInput
-            key={item?.id}
-            placeholder={item.placeholder}
-            value={item.value}
-            onChangeText={item.onChange}
-            error={item.error}
-            withLabel={item.label}
-          />
-        )
-      )}
+      {array.map((item) => (
+        <CustomInput
+          key={item?.id}
+          placeholder={item.placeholder}
+          value={item.value}
+          onChangeText={item.onChange}
+          error={item.error}
+          withLabel={item.label}
+        />
+      ))}
 
       <CustomButton
         title="Submit"

@@ -13,6 +13,7 @@ import { Fonts } from "../utils/fonts";
 
 const PageTwo = ({ navigation, route }) => {
   const data = route?.params?.data;
+
   const init = {
     panName: "",
     pinCode: "",
@@ -24,6 +25,7 @@ const PageTwo = ({ navigation, route }) => {
     fatherName: "",
     maritalStatus: "",
     selectedAddress: "",
+    location: "",
     selectedCardDelivery: "",
     email: "",
   };
@@ -40,6 +42,7 @@ const PageTwo = ({ navigation, route }) => {
     fatherNameError: "",
     maritalStatusError: "",
     emailError: "",
+    locationError: "",
   };
 
   const [errors, setErrors] = useState(inits);
@@ -135,6 +138,8 @@ const PageTwo = ({ navigation, route }) => {
           "Please enter your father's or spouse's name.";
       else if (!state.maritalStatus)
         newErrors.maritalStatusError = "Please select your marital status.";
+      else if (!state.location)
+        newErrors.locationError = "Please enter your location";
       else if (!state.email)
         newErrors.emailError = "Please enter your email address.";
 
@@ -212,12 +217,20 @@ const PageTwo = ({ navigation, route }) => {
         label="Office Address"
         fontFamily={Fonts.semiBold}
         fontSize={12}
+        marginBottom={20}
         color={
           state.selectedAddress === "Office Address" ? COLORS.red : COLORS.black
         }
         onPress={() =>
           setState({ ...state, selectedAddress: "Office Address" })
         }
+      />
+      <CustomInput
+        withLabel="Location"
+        value={state.location}
+        placeholder="Enter Location"
+        onChangeText={(text) => setState({ ...state, location: text })}
+        error={errors.locationError}
       />
 
       <CustomText

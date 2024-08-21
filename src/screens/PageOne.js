@@ -133,7 +133,10 @@ const PageOne = ({ navigation }) => {
         title="Next"
         marginTop={18}
         disabled={Object.keys(errors).some((key) => errors[key] !== "")}
-        onPress={() => navigation.navigate("PageTwo", { data: state })}
+        onPress={() => {
+          navigation.navigate("PageTwo", { data: state });
+          setState(init);
+        }}
       />
     </ScreenWrapper>
   );
