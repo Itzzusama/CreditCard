@@ -79,7 +79,7 @@ const PageThree = ({ route, navigation }) => {
       const res = await firestore()
         .collection("cards")
         .doc(_id)
-        .set({ ...data, ...state });
+        .set({ ...data, ...state, _id });
       ToastMessage("Card created successfully");
       navigation.navigate("PageOne");
       console.log("============res", res);
