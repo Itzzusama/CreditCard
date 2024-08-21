@@ -14,10 +14,9 @@ import { Fonts } from "../utils/fonts";
 
 const PageThree = ({ route, navigation }) => {
   const data = route?.params?.data;
-  console.log("==========data", data);
 
   const init = {
-    addressDetails: "",
+    addressDetails: "Salaried",
     cardNumber: "",
     expiryDate: "",
     CVV: "",

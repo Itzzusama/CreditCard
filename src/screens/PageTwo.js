@@ -16,7 +16,6 @@ const PageTwo = ({ navigation, route }) => {
 
   const init = {
     panName: "",
-    pinCode: "",
     dateOfBirth: "",
     title: "",
     gender: "",
@@ -24,9 +23,9 @@ const PageTwo = ({ navigation, route }) => {
     motherName: "",
     fatherName: "",
     maritalStatus: "",
-    selectedAddress: "",
+    selectedAddress: "Residence",
     location: "",
-    selectedCardDelivery: "",
+    selectedCardDelivery: "Office",
     email: "",
   };
 
