@@ -1,23 +1,20 @@
-import { StyleSheet, Text, View } from "react-native";
 import React, { useEffect, useMemo, useState } from "react";
+import { TouchableOpacity, View } from "react-native";
+
 import ScreenWrapper from "../components/ScreenWrapper";
-import CustomText from "../components/CustomText";
-import { Fonts } from "../utils/fonts";
-import { COLORS } from "../utils/COLORS";
-import CustomInput from "../components/CustomInput";
-import { TouchableOpacity } from "react-native";
 import CustomButton from "../components/CustomButton";
+import CustomInput from "../components/CustomInput";
+import CustomText from "../components/CustomText";
+
+import { COLORS } from "../utils/COLORS";
+import { Fonts } from "../utils/fonts";
 
 const PageThree = () => {
   const init = {
-    phone: "",
-    pan: "",
-    pinCode: "",
+    netIncome: "",
   };
   const inits = {
-    phoneError: "",
-    panError: "",
-    pinCodeError: "",
+    netIncomeError: "",
   };
   const [errors, setErrors] = useState(inits);
   const [state, setState] = useState(init);
@@ -27,10 +24,10 @@ const PageThree = () => {
     {
       id: 1,
       placeholder: "Enter Net Annual Income(₹)",
-      value: state.phone,
+      value: state.netIncome,
       label: "Net Annual Income(₹)",
-      onChange: (text) => setState({ ...state, phone: text }),
-      error: errors?.phoneError,
+      onChange: (text) => setState({ ...state, netIncome: text }),
+      error: errors.netIncomeError,
     },
     { id: 1.1 },
     {
@@ -69,14 +66,9 @@ const PageThree = () => {
   const errorCheck = useMemo(() => {
     return () => {
       let newErrors = {};
-      if (!state.email) newErrors.emailError = "Please enter Email address";
-      else if (!regEmail.test(state.email))
-        newErrors.emailError = "Please enter valid email";
-      else if (!state.password)
-        newErrors.passwordError = "Please enter Password";
-      else if (!passwordRegex.test(state.password))
-        newErrors.passwordError =
-          "Password must contain 1 number, 1 special character, Uppercase and 8 digits";
+      if (!state.netIncome)
+        newErrors.netIncomeError = "Please enter Net Annal Income";
+
       setErrors(newErrors);
     };
   }, [state]);
@@ -88,19 +80,19 @@ const PageThree = () => {
   return (
     <ScreenWrapper paddingHorizontal={12} scrollEnabled>
       <CustomText
-        label={"Credit Card"}
+        label="Credit Card"
         fontFamily={Fonts.bold}
         fontSize={28}
         color={COLORS.black}
       />
       <CustomText
-        label={"Credit Card Processed Instantly"}
+        label="Credit Card Processed Instantly"
         fontFamily={Fonts.semiBold}
         fontSize={12}
         color={COLORS.black}
       />
       <CustomText
-        label={"We're almost there! Tell us something about your work!"}
+        label="We're almost there! Tell us something about your work!"
         fontFamily={Fonts.semiBold}
         fontSize={18}
         color={COLORS.red}
@@ -109,7 +101,7 @@ const PageThree = () => {
       />
 
       <CustomText
-        label={"Address Details(Select One)"}
+        label="Address Details(Select One)"
         fontFamily={Fonts.medium}
         marginBottom={2}
         color={COLORS.black}
@@ -117,7 +109,7 @@ const PageThree = () => {
 
       <TouchableOpacity onPress={() => setSelectedAddress("Salaried")}>
         <CustomText
-          label={"Salaried"}
+          label="Salaried"
           fontFamily={Fonts.semiBold}
           fontSize={12}
           color={selectedAddress === "Salaried" ? COLORS.red : COLORS.black}
@@ -125,7 +117,7 @@ const PageThree = () => {
       </TouchableOpacity>
       <TouchableOpacity onPress={() => setSelectedAddress("Self Employed")}>
         <CustomText
-          label={"Self Employed"}
+          label="Self Employed"
           fontFamily={Fonts.semiBold}
           fontSize={12}
           color={
@@ -138,7 +130,8 @@ const PageThree = () => {
       {array.map((item) =>
         item?.id == 1.1 ? (
           <CustomText
-            label={"Credit Card Details"}
+            key={item.id}
+            label="Credit Card Details"
             fontFamily={Fonts.semiBold}
             color={COLORS.red}
             fontSize={22}
@@ -157,9 +150,10 @@ const PageThree = () => {
       )}
 
       <CustomButton
-        title={"Submit"}
+        title="Submit"
         marginBottom={18}
         marginTop={18}
+        disabled={Object.keys(errors).some((key) => errors[key] !== "")}
         // onPress={() => navigation.navigate("PageThree")}
       />
     </ScreenWrapper>
@@ -167,5 +161,3 @@ const PageThree = () => {
 };
 
 export default PageThree;
-
-const styles = StyleSheet.create({});
