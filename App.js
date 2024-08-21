@@ -1,24 +1,27 @@
+import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { NavigationContainer } from "@react-navigation/native";
-import { PersistGate } from "redux-persist/integration/react";
-import { StatusBar } from "react-native";
-import { Provider } from "react-redux";
+
 import React from "react";
 
-import Routes from "./src/Routes";
+import PageThree from "./src/screens/PageThree";
+import PageOne from "./src/screens/PageOne";
+import PageTwo from "./src/screens/PageTwo";
 
-import { persistor, store } from "./src/store";
-import { COLORS } from "./src/utils/COLORS";
-
+const Stack = createNativeStackNavigator();
 const App = () => {
   return (
-    <Provider store={store}>
-      <PersistGate loading={null} persistor={persistor}>
-        <NavigationContainer>
-          <StatusBar barStyle="dark-content" backgroundColor={COLORS.bg} />
-          <Routes />
-        </NavigationContainer>
-      </PersistGate>
-    </Provider>
+    <NavigationContainer>
+      <Stack.Navigator
+        screenOptions={{
+          headerShown: false,
+          animation: "slide_from_right",
+        }}
+      >
+        <Stack.Screen name="PageOne" component={PageOne} />
+        <Stack.Screen name="PageTwo" component={PageTwo} />
+        <Stack.Screen name="PageThree" component={PageThree} />
+      </Stack.Navigator>
+    </NavigationContainer>
   );
 };
 

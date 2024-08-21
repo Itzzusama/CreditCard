@@ -76,7 +76,7 @@ const PageOne = ({ navigation }) => {
       let newErrors = {};
       if (!state.phone)
         newErrors.phoneError = "Please enter your mobile number.";
-      else if (state.phone.length < 12)
+      else if (state.phone.length < 11)
         newErrors.phoneError = "Mobile number must be 12 digits.";
       else if (!state.pan) newErrors.panError = "Please enter your PAN number.";
       else if (!state.pinCode)

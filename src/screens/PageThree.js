@@ -1,24 +1,39 @@
 import React, { useEffect, useMemo, useState } from "react";
-import { TouchableOpacity, View } from "react-native";
+import firestore from "@react-native-firebase/firestore";
+import uuid from "react-native-uuid";
+import { View } from "react-native";
 
 import ScreenWrapper from "../components/ScreenWrapper";
 import CustomButton from "../components/CustomButton";
 import CustomInput from "../components/CustomInput";
 import CustomText from "../components/CustomText";
 
+import { ToastMessage } from "../utils/ToastMessage";
 import { COLORS } from "../utils/COLORS";
 import { Fonts } from "../utils/fonts";
 
-const PageThree = () => {
+const PageThree = ({ route, navigation }) => {
+  const data = route?.params?.data;
+  console.log("==========data", data);
+
   const init = {
+    addressDetails: "",
     netIncome: "",
+    holderName: "",
+    cardNumber: "",
+    expiryDate: "",
+    CVV: "",
   };
   const inits = {
     netIncomeError: "",
+    holderNameError: "",
+    cardNumberError: "",
+    expiryDateError: "",
+    CVVError: "",
   };
   const [errors, setErrors] = useState(inits);
   const [state, setState] = useState(init);
-  const [selectedAddress, setSelectedAddress] = useState(null);
+  const [loading, setLoading] = useState(false);
 
   const array = [
     {
@@ -33,41 +48,48 @@ const PageThree = () => {
     {
       id: 2,
       placeholder: "Enter Card Holder Name",
-      value: state.pan,
+      value: state.holderName,
       label: "Card Holder Name",
-      onChange: (text) => setState({ ...state, pan: text }),
-      error: errors?.panError,
+      onChange: (text) => setState({ ...state, holderName: text }),
+      error: errors.holderNameError,
     },
     {
       id: 3,
       placeholder: "Enter Card Number",
-      value: state.pinCode,
+      value: state.cardNumber,
       label: "Card Number",
-      onChange: (text) => setState({ ...state, pinCode: text }),
-      error: errors?.pinCodeError,
+      onChange: (text) => setState({ ...state, cardNumber: text }),
+      error: errors.cardNumberError,
     },
     {
       id: 4,
       placeholder: "Enter Expiry Date",
-      value: state.pinCode,
+      value: state.expiryDate,
       label: "Expiry Date MM/YYYY",
-      onChange: (text) => setState({ ...state, pinCode: text }),
-      error: errors?.pinCodeError,
+      onChange: (text) => setState({ ...state, expiryDate: text }),
+      error: errors.expiryDateError,
     },
     {
       id: 5,
       placeholder: "Enter CVV",
-      value: state.pinCode,
+      value: state.CVV,
       label: "CVV",
-      onChange: (text) => setState({ ...state, pinCode: text }),
-      error: errors?.pinCodeError,
+      onChange: (text) => setState({ ...state, CVV: text }),
+      error: errors.CVVError,
     },
   ];
   const errorCheck = useMemo(() => {
     return () => {
       let newErrors = {};
       if (!state.netIncome)
-        newErrors.netIncomeError = "Please enter Net Annal Income";
+        newErrors.netIncomeError = "Please enter Net Annual Income.";
+      else if (!state.holderName)
+        newErrors.holderNameError = "Please enter Card Holder Name.";
+      else if (!state.cardNumber)
+        newErrors.cardNumberError = "Please enter Card Number.";
+      else if (!state.expiryDate)
+        newErrors.expiryDateError = "Please enter Expiry Date.";
+      else if (!state.CVV) newErrors.CVVError = "Please enter CVV.";
 
       setErrors(newErrors);
     };
@@ -76,7 +98,23 @@ const PageThree = () => {
   useEffect(() => {
     errorCheck();
   }, [errorCheck]);
-
+  const onCreateCard = async () => {
+    setLoading(true);
+    const _id = uuid.v4();
+    try {
+      const res = await firestore()
+        .collection("cards")
+        .doc(_id)
+        .set({ ...data, ...state });
+      ToastMessage("Card created successfully");
+      navigation.navigate("PageOne");
+      console.log("============res", res);
+      setLoading(false);
+    } catch (error) {
+      console.log("============error", error.message);
+      setLoading(false);
+    }
+  };
   return (
     <ScreenWrapper paddingHorizontal={12} scrollEnabled>
       <CustomText
@@ -107,24 +145,22 @@ const PageThree = () => {
         color={COLORS.black}
       />
 
-      <TouchableOpacity onPress={() => setSelectedAddress("Salaried")}>
-        <CustomText
-          label="Salaried"
-          fontFamily={Fonts.semiBold}
-          fontSize={12}
-          color={selectedAddress === "Salaried" ? COLORS.red : COLORS.black}
-        />
-      </TouchableOpacity>
-      <TouchableOpacity onPress={() => setSelectedAddress("Self Employed")}>
-        <CustomText
-          label="Self Employed"
-          fontFamily={Fonts.semiBold}
-          fontSize={12}
-          color={
-            selectedAddress === "Self Employed" ? COLORS.red : COLORS.black
-          }
-        />
-      </TouchableOpacity>
+      <CustomText
+        label="Salaried"
+        fontFamily={Fonts.semiBold}
+        fontSize={12}
+        onPress={() => setState({ ...state, addressDetails: "Salaried" })}
+        color={state.addressDetails === "Salaried" ? COLORS.red : COLORS.black}
+      />
+      <CustomText
+        onPress={() => setState({ ...state, addressDetails: "Self Employed" })}
+        label="Self Employed"
+        fontFamily={Fonts.semiBold}
+        fontSize={12}
+        color={
+          state.addressDetails === "Self Employed" ? COLORS.red : COLORS.black
+        }
+      />
       <View style={{ marginVertical: 12 }} />
 
       {array.map((item) =>
@@ -141,10 +177,9 @@ const PageThree = () => {
             key={item?.id}
             placeholder={item.placeholder}
             value={item.value}
-            // onChangeText={item.onChange}
+            onChangeText={item.onChange}
             error={item.error}
             withLabel={item.label}
-            // secureTextEntry={item.id === 2}
           />
         )
       )}
@@ -153,8 +188,9 @@ const PageThree = () => {
         title="Submit"
         marginBottom={18}
         marginTop={18}
+        loading={loading}
         disabled={Object.keys(errors).some((key) => errors[key] !== "")}
-        // onPress={() => navigation.navigate("PageThree")}
+        onPress={onCreateCard}
       />
     </ScreenWrapper>
   );

@@ -11,7 +11,8 @@ import Icons from "../components/Icons";
 import { COLORS } from "../utils/COLORS";
 import { Fonts } from "../utils/fonts";
 
-const PageTwo = ({ navigation }) => {
+const PageTwo = ({ navigation, route }) => {
+  const data = route?.params?.data;
   const init = {
     panName: "",
     pinCode: "",
@@ -119,7 +120,23 @@ const PageTwo = ({ navigation }) => {
     return () => {
       let newErrors = {};
       if (!state.panName)
-        newErrors.panNameError = "Please enter your PAN number.";
+        newErrors.panNameError = "Please enter your PAN name.";
+      else if (!state.dateOfBirth)
+        newErrors.dateOfBirthError = "Please enter your Date of Birth.";
+      else if (!state.title) newErrors.titleError = "Please select a title.";
+      else if (!state.gender)
+        newErrors.genderError = "Please select your gender.";
+      else if (!state.cardName)
+        newErrors.cardNameError = "Please enter the name for your card.";
+      else if (!state.motherName)
+        newErrors.motherNameError = "Please enter your mother's name.";
+      else if (!state.fatherName)
+        newErrors.fatherNameError =
+          "Please enter your father's or spouse's name.";
+      else if (!state.maritalStatus)
+        newErrors.maritalStatusError = "Please select your marital status.";
+      else if (!state.email)
+        newErrors.emailError = "Please enter your email address.";
 
       setErrors(newErrors);
     };
@@ -215,7 +232,7 @@ const PageTwo = ({ navigation }) => {
         label="Office"
         fontFamily={Fonts.semiBold}
         fontSize={12}
-        onPress={() => setState({ ...state, selectedCardDelivery: "Office " })}
+        onPress={() => setState({ ...state, selectedCardDelivery: "Office" })}
         color={
           state.selectedCardDelivery === "Office" ? COLORS.red : COLORS.black
         }
@@ -228,9 +245,8 @@ const PageTwo = ({ navigation }) => {
         color={
           state.selectedCardDelivery === "Home" ? COLORS.red : COLORS.black
         }
-        onPress={() => setState({ ...state, selectedCardDelivery: "Home " })}
+        onPress={() => setState({ ...state, selectedCardDelivery: "Home" })}
       />
-
       <CustomInput
         withLabel="Email Address"
         value={state.email}
@@ -238,7 +254,6 @@ const PageTwo = ({ navigation }) => {
         onChangeText={(text) => setState({ ...state, email: text })}
         error={errors.emailError}
       />
-
       <View
         style={{ flexDirection: "row", alignItems: "center", marginTop: 16 }}
       >
@@ -276,7 +291,10 @@ const PageTwo = ({ navigation }) => {
         title="Next"
         marginBottom={18}
         marginTop={18}
-        onPress={() => navigation.navigate("PageThree")}
+        disabled={Object.keys(errors).some((key) => errors[key] !== "")}
+        onPress={() =>
+          navigation.navigate("PageThree", { data: { ...data, ...state } })
+        }
       />
     </ScreenWrapper>
   );
